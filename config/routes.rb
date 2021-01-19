@@ -4,6 +4,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :movies, only: [ :index ]
       resources :seasons, only: [ :index ]
+      resources :libraries, only: [ :index ]
+      resources :users do
+        resources :purchases, only: [ :index, :create]
+      end
     end
   end
 
