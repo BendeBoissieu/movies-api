@@ -5,7 +5,10 @@ Season.destroy_all
 User.destroy_all
 
 10.times { Movie.create(title: Faker::Movie.title, plot: Faker::Lorem.paragraph) }
-5.times { Season.create(title: Faker::Movie.title, plot: Faker::Lorem.paragraph) }
+5.times do |nb|
+  Season.create(title: Faker::Movie.title, plot: Faker::Lorem.paragraph, season_nb: nb+1)
+end
+
 Season.all.each do |season|
   rand(3..15).times {Episode.create(title: Faker::Books::CultureSeries.book, plot: Faker::Lorem.paragraph, season_id: season.id)}
   PurchaseOption.create(price: 8.00, video_quality: "SD", season_id: season.id)
@@ -19,4 +22,4 @@ end
 
 user = User.create(email: "user1@test.com")
 movie = Movie.first
-Purchase.create(user_id: user.id, content: "Movie", movie_id: movie.id, purchase_option_id: movie.purchase_options.first.id)
+Purchase.create(user_id: user.id, content: "Movie", purchase_option_id: movie.purchase_options.first.id)
