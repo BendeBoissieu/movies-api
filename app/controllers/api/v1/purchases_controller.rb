@@ -1,4 +1,5 @@
 class Api::V1::PurchasesController < ApplicationController
+
   def index
     user = User.find(params["user_id"].to_i)
 
