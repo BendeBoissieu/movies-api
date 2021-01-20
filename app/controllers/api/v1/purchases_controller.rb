@@ -25,7 +25,10 @@ class Api::V1::PurchasesController < ApplicationController
       render json: {status: 'ERROR', message: 'this purchase option does not exist', data: purchase.errors}, status: :unprocessable_entity
     else
       new_purchase_option = purchase_options.first
-      if is_allow_to_created?(user.id, new_purchase_option)
+
+      # all previous purchases from the user
+      all_purchases = hash_all_purchases(user.id)
+      if !is_existing_same_content?(user.id, new_purchase_option, all_purchases)
         if purchase.save
           render json: {status: 'SUCCESS', message: 'purchase created', data: purchase}, status: :ok
         else
@@ -44,7 +47,8 @@ class Api::V1::PurchasesController < ApplicationController
     params.permit(:purchase_option_id, :user_id)
   end
 
-  def is_allow_to_created?(user_id, new_purchase_option)
+  # hash with the previous purchases and creation date from the user
+  def hash_all_purchases(user_id)
     all_purchases = {}
     purchases = Purchase.where(user_id: user_id)
     purchases.each do |purchase|
@@ -54,23 +58,27 @@ class Api::V1::PurchasesController < ApplicationController
         all_purchases["season"] = {purchase.purchase_option.season_id => purchase.created_at}
       end
     end
+      return all_purchases
+  end
 
+  # checking if a previous same content exist and is older than 3 days
+  def is_existing_same_content?(user_id, new_purchase_option, all_purchases)
     if new_purchase_option.movie_id
       movie_id = new_purchase_option.movie_id
       if all_purchases["movie"] && all_purchases["movie"][movie_id]
         if all_purchases["movie"][movie_id] > 3.days.ago
-          return false
+          return true
         end
       end
     elsif new_purchase_option.season_id
       season_id = new_purchase_option.season_id
       if all_purchases["season"] && all_purchases["season"][season_id]
         if all_purchases["season"][season_id] > 3.days.ago
-          return false
+          return true
         end
       end
     end
-    return true
+    return false
   end
 
 end
