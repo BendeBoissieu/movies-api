@@ -1,7 +1,7 @@
 json.array! @seasons do |season|
-  json.extract! season, :title, :plot
+  json.extract! season, :id, :title, :plot
   json.episodes season.episodes do |episode|
-    json.extract! episode, :title, :plot, :season_id
+    json.extract! episode, :id, :title, :plot, :season_id
   end
 end
 

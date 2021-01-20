@@ -12,7 +12,7 @@ Endpoint all seasons and movies
 Create a purchase
 curl -i -X POST                                                              \
      -H 'Content-Type: application/json'                                     \
-     -d '{ "purchase_option_id": "1", "content": "Movie" }' \
+     -d '{ "purchase_option_id": "1" }' \
      http://localhost:3000/api/v1/users/1/purchases
 
 

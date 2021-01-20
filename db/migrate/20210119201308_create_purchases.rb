@@ -3,7 +3,6 @@ class CreatePurchases < ActiveRecord::Migration[6.0]
     create_table :purchases do |t|
       t.references :purchase_option, null: false
       t.references :user, null: false
-      t.string :content
 
       t.timestamps
     end

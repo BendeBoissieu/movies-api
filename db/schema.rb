@@ -46,7 +46,6 @@ ActiveRecord::Schema.define(version: 2021_01_19_201308) do
   create_table "purchases", force: :cascade do |t|
     t.bigint "purchase_option_id", null: false
     t.bigint "user_id", null: false
-    t.string "content"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["purchase_option_id"], name: "index_purchases_on_purchase_option_id"

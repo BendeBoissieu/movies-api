@@ -1,3 +1,3 @@
 json.array! @movies do |movie|
-  json.extract! movie, :title, :plot
+  json.extract! movie, :id, :title, :plot
 end
