@@ -8,8 +8,8 @@ class Api::V1::PurchasesController < ApplicationController
     movie_ids = purchases.map{|purchase| purchase.purchase_option.movie_id}.compact
     season_ids = purchases.map{|purchase| purchase.purchase_option.season_id}.compact
 
-    @movies = Movie.where(id: movie_ids)
-    @seasons = Season.where(id: season_ids)
+    @movies = Movie.where(id: movie_ids).order("created_at DESC")
+    @seasons = Season.where(id: season_ids).order("created_at DESC")
 
     render :index, status: :ok
   end

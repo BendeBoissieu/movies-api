@@ -6,3 +6,4 @@ FactoryBot.define do
     season_nb { season_nb += 1}
   end
 end
+
