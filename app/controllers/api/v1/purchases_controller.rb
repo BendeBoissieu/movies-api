@@ -3,6 +3,7 @@ class Api::V1::PurchasesController < ApplicationController
   def index
     user = User.find(params["user_id"].to_i)
 
+    #searching all previous purchases less than 2 days ago
     purchases = Purchase.includes(:purchase_option).where(user_id: user.id).where("created_at > ?", 2.days.ago)
 
     movie_ids = purchases.map{|purchase| purchase.purchase_option.movie_id}.compact
@@ -62,7 +63,7 @@ class Api::V1::PurchasesController < ApplicationController
       return all_purchases
   end
 
-  # checking if a previous same content exist and is older than 3 days
+  # checking if a previous same content exists and is older than 3 days
   def is_existing_same_content?(user_id, new_purchase_option, all_purchases)
     if new_purchase_option.movie_id
       movie_id = new_purchase_option.movie_id

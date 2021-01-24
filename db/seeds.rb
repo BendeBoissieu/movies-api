@@ -22,4 +22,4 @@ end
 
 user = User.create(email: "user1@test.com")
 movie = Movie.first
-Purchase.create(user_id: user.id, content: "Movie", purchase_option_id: movie.purchase_options.first.id)
+Purchase.create(user_id: user.id, purchase_option_id: movie.purchase_options.first.id)

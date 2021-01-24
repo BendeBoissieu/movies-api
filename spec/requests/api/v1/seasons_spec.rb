@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Seasons API', type: :request do
-  # initialize
-  Season.destroy_all
+
   let!(:seasons) { create_list(:season, 10) }
-  # Test suite for GET '/api/v1/seasons'
+
   describe 'GET /api/v1/seasons' do
     # make HTTP get request before each example
     before { get '/api/v1/seasons' }

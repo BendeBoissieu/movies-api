@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Movies API', type: :request do
-  #initialization
+
+  let!(:movie) { Movie.create(title: "movie1") }
 
   describe 'GET /api/v1/movies' do
     before do
