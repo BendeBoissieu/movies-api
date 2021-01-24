@@ -1,28 +1,26 @@
 require 'rails_helper'
 
-RSpec.shared_context 'purchases' do
+RSpec.describe 'Purchases API', type: :request do
+
   let!(:user1) { User.create(email: "test@test.com") }
   let!(:movie) { Movie.create(title: "movie1") }
   let!(:season) { Season.create(title: "season1") }
   let!(:purchase_option) { PurchaseOption.create(price: 10.0, video_quality: "SD", movie_id: movie.id) }
   let!(:user_id) { user1.id.to_s }
-end
-
-RSpec.describe 'Purchases API', type: :request do
 
   describe 'GET /api/v1/users/user_id/purchases' do
-    include_context 'purchases'
+    let!(:purchase) { Purchase.create(purchase_option_id: purchase_option.id, user_id: user1.id) }
 
     it 'return the purchase if it was created less than 2 days' do
       get '/api/v1/users/'+user_id+'/purchases'
-      expect(json).to eq({"movies"=>[{"title"=>"movie1"}], "seasons"=>[]})
+      expect(json["movies"].length).to eq(1)
     end
     it 'does not return the purchase if it was created more than 2 days' do
-      purchase_option.update(created_at:  3.days.ago)
+      purchase.update(created_at:  3.days.ago)
       get '/api/v1/users/'+user_id+'/purchases'
-      expect(json).to eq({"movies"=>[], "seasons"=>[]})
+      expect(json["movies"].length).to eq(0)
+      expect(json["seasons"].length).to eq(0)
     end
-
 
     it 'returns status code 200' do
       get '/api/v1/users/'+user_id+ '/purchases'
@@ -31,8 +29,6 @@ RSpec.describe 'Purchases API', type: :request do
   end
 
   describe "POST /api/v1/users/user_id/purchases" do
-    include_context 'purchases'
-
     it 'create a purchase with valid attributes' do
       purchase_params = { purchase_option_id: purchase_option.id}
       post '/api/v1/users/'+user_id+'/purchases', :params => purchase_params.to_json, :headers => { "Content-Type": "application/json" }
