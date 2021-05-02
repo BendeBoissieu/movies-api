@@ -15,3 +15,6 @@ curl -i -X POST                                                              \
      -d '{ "purchase_option_id": "1" }' \
      http://localhost:3000/api/v1/users/1/purchases
 
+
+test commit 3
+
