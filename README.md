@@ -16,4 +16,4 @@ curl -i -X POST                                                              \
      http://localhost:3000/api/v1/users/1/purchases
 
 
-test commit 3
+test commit 1
